@@ -1,36 +1,48 @@
 package Bussines;
 
+import Entidades.EntSubsidies;
 import Persistencia.DaosSubsidies;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
-import utilidades.ConBD1;
 import utilidades.Conexion;
 
 /**
- * @author Jeison
+- * @author Jeison González Cifuentes
  */
 public class SubsidyBussines {
     
-    public static DaosSubsidies doSubsidies;
-    static Connection c;
+    DaosSubsidies dao;
+    Connection conexion;
+
     public SubsidyBussines() {
-        doSubsidies = new DaosSubsidies();
+        dao = new DaosSubsidies();
     }
-    
-    public static String saveSubsidy(String agua1, String elct1){
-        String mensaje = "";
+
+    public List<EntSubsidies> subsidiesList (EntSubsidies subsidies) throws SQLException {
         try {
-            c = new ConBD1().getConexionMysql();
-            doSubsidies = new DaosSubsidies();
-            if (doSubsidies.saveSubsidy(c, agua1, elct1)) {
-                mensaje = "Subsidio calculado correctamente";
-            } else {
-                mensaje = "Ocurrió un error calculando el subsidio";
-            }
+            conexion = Conexion.getCon();
+            return (List<EntSubsidies>) dao.subsidiesList(conexion, subsidies);
         } catch (Exception e) {
-            mensaje = "Ocurrió un error calculando el subsidio";
+            System.out.println("Error obteniendo listado de subsidios : " + e.getMessage());
+            return null;
         }
-        return mensaje;
+    }
+
+    public String deleteSubsidy(int id_subsidy) throws SQLException {
+        conexion = Conexion.getCon();
+        return dao.deleteSubsidy(conexion, id_subsidy);
+    }
+
+    public String insertSubsidy(EntSubsidies subsidy) throws Exception {
+        String info = "";
+        
+        if (info.isEmpty()) {
+            conexion = Conexion.getCon();
+            info = dao.insertSubsidy(conexion, subsidy);
+        }
+        
+        return info;
     }
     
 }

@@ -1,197 +1,138 @@
+<%-- 
+    Document   : Subsidies
+    Created on : Oct 17, 2017, 6:30:20 PM
+    Author     : Lizy
+--%>
 
+<%@page import="java.util.List"%>
+<%@page import="Entidades.EntSubsidies"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    List<EntSubsidies> list = (List<EntSubsidies>) request.getAttribute("list");
+%>
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Servicios publicos</title>
-  
- <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-teal.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+    <title>Servicios publicos</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-teal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <body>
+        <!-- Header -->
+        <header class="w3-container w3-teal w3-padding" id="myHeader">
+            <button class="w3-btn w3-xlarge w3-theme-dark w3-hover-teal">
+                <a href="index.jsp" class="hoverable"><img src="imagenes/back.png" class="hoverable"></a>
+            </button>
+            <div class="w3-center">
+                <div class="w3-padding-25" style="text-align: right;"></div>
+                <h4>SERVICIOS PÚBLICOS</h4>
+                <h1 class="w3-xxxlarge w3-animate-bottom">GESTIÓN DE SUBSIDIOS</h1>
+                <div class="w3-padding-32">
+                    <a class="w3-btn w3-xlarge w3-theme-dark w3-hover-teal" href="#calculate" style="font-weight:900;">GESTIONAR</a>
+                </div>
+            </div>
+        </header>
 
-</head>
-
-<body>
-
-<!-- Side Navigation -->
-<nav class="w3-sidebar w3-bar-block w3-card-2 w3-animate-left w3-center" style="display:none" id="mySidebar">
-  <h1 class="w3-xxxlarge w3-text-theme">Side Navigation</h1>
-  <button class="w3-bar-item w3-button" onclick="w3_close()">Close <i class="fa fa-remove"></i></button>
-  <a href="ciclos_consumo.jsp" class="w3-bar-item w3-button">Ciclos de consumo</a>
-  <a href="#" class="w3-bar-item w3-button">Link 2</a>
-  <a href="#" class="w3-bar-item w3-button">Link 3</a>
-  <a href="#" class="w3-bar-item w3-button">Link 4</a>
-</nav>
-
-
-<!-- Header -->
-<header class="w3-container w3-teal w3-padding" id="myHeader">
- <i onclick="w3_open()" class="fa fa-bars w3-xlarge w3-button w3-teal"></i>
-  <div class="w3-center">
-  <div class="w3-padding-25" style="text-align: right;">
-    <button class="w3-btn w3-theme-dark w3-hover-teal" onclick="document.getElementById('register').style.display='block'">Registrar operador</button>
-    <button class="w3-btn w3-theme-dark w3-hover-teal" onclick="document.getElementById('logout').style.display='block'">Cerrar sesion</button>
-  </div>
-  <h1 class="w3-xxxlarge w3-animate-bottom">SERVICIOS PUBLICOS</h1>
-  </div>
-</header>
-
-<!-- Modal registrarse-->
-<div id="register" class="w3-modal">
-  <div class="w3-modal-content w3-card-4 w3-animate-top">
-    <header class="w3-container w3-theme-l1"> 
-      <span onclick="document.getElementById('register').style.display='none'"
-      class="w3-button w3-display-topright">×</span>
-      <h2>Registrarse</h2>
-    </header>
-    <div class="w3-padding">
-      <form>
-        <div class="w3-section">      
-          <input class="w3-input" type="text" required>
-          <label>Usuario</label>
+        <div id="calculate" class="col-xs-12" style="padding: 20px 15px;">
+            <header>
+                <h2>Calcular subsidios</h2>
+            </header>
+            <div class="w3-padding">
+                <form action="./SubsidiosServlet" method="post">
+                    
+                            <%if (list != null && !list.isEmpty()) {%> 
+                                <div class="col-lg-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th class="col-sm-1">ID</th>
+                                                    <th class="col-sm-2">NOMBRE</th>
+                                                    <th class="col-sm-2">DESCRIPCIÓN</th>
+                                                    <th class="col-sm-2">AGUA</th>
+                                                    <th class="col-sm-3">GAS</th>
+                                                    <th class="col-sm-2">ELECTRICIDAD</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% for (EntSubsidies subsidy : list) {%>
+                                                    <tr>
+                                                        <td><%=subsidy.getIdSybsudy()%></td>
+                                                        <td><%=subsidy.getIdSybsudy()%></td>
+                                                        <td><%=subsidy.getIdSybsudy()%></td>
+                                                        <td><%=subsidy.getIdSybsudy()%></td>
+                                                        <td><%=subsidy.getIdSybsudy()%></td>
+                                                        <td><%=subsidy.getIdSybsudy()%></td>
+                                                    </tr>
+                                                <%}%>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            <%}%>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <div class="form-group col-xs-12 col-sm-6 col-md-offset-3">
+                        <label for="idSybsudy" class="col-xs-12 control-label">Código de subsidio : </label>
+                        <input name="idSybsudy" class="form-control col-xs-12" id="idSybsudy">
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-md-offset-3">
+                        <label for="name" class="col-xs-12 control-label">Nombre : </label>
+                        <input name="name" class="form-control col-xs-12" id="name">
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-md-offset-3">
+                        <label for="description" class="col-xs-12 control-label">Descripción : </label>
+                        <input name="description" class="form-control col-xs-12" id="description">
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-md-offset-3">
+                        <label for="startDate" class="col-xs-12 control-label">Fecha de inicio : </label>
+                        <input name="startDate" class="form-control col-xs-12" id="startDate">
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-md-offset-3">
+                        <label for="endDate" class="col-xs-12 control-label">Fecha fin : </label>
+                        <input name="endDate" class="form-control col-xs-12" id="endDate">
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-md-offset-3">
+                        <label for="expectedNaturalGasValue" class="col-xs-12 control-label">Consumo de gas aplicable : </label>
+                        <input name="expectedNaturalGasValue" class="form-control col-xs-12" id="expectedNaturalGasValue">
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-md-offset-3">
+                        <label for="expectedWaterValue" class="col-xs-12 control-label">Consumo de agua aplicable : </label>
+                        <input name="expectedWaterValue" class="form-control col-xs-12" id="expectedWaterValue">
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-md-offset-3">
+                        <label for="expectedEnergyValue" class="col-xs-12 control-label">Consumo eléctrico aplicable : </label>
+                        <input name="expectedEnergyValue" class="form-control col-xs-12" id="expectedEnergyValue">
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-md-offset-3">
+                        <label for="ejemplo_email_3" class="col-xs-12 control-label">Tipo : </label>
+                        <div class="col-xs-12">
+                            <div class="radio">
+                                <label><input type="radio" id="type_1" checked name="type_1"> Option 1</label>
+                            </div>
+                            <div class="radio">
+                                <label><input type="radio" id="type_2" name="type_2"> Option 2</label>
+                            </div>
+                        </div>
+                    </div>
+                            
+                            
+                    <jsp:include page="botones.jsp"  flush="false"></jsp:include>
+                </form>
+            </div>
         </div>
-        <div class="w3-section">      
-          <input class="w3-input" type="text" required>
-          <label>Contraseña</label>
-        </div>
-        <div class="w3-section">      
-          <input class="w3-input" type="text" required>
-          <label>Confirmar contraseña</label>
-        </div>
-        <br>  
-        <div class="w3-section">
-          <button class="w3-btn w3-theme w3-block" style="size: 500;">Registrarse</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<!-- Modal cerrar sesion-->
-<div id="logout" class="w3-modal">
-  <div class="w3-modal-content w3-card-4 w3-animate-top">
-    <header class="w3-container w3-theme-l1"> 
-      <span onclick="document.getElementById('logout').style.display='none'"
-      class="w3-button w3-display-topright">×</span>
-      <h2>Cerrar sesion</h2>
-    </header>
-    <div class="w3-padding">
-      <p>¿Relamente desea cerrar la sesion?</p>
-      <form>
-        <br>  
-        <div class="w3-section">
-          <button class="w3-btn w3-theme w3-block" style="size: 500;">Aceptar</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<!--Menu formularios-->
-<div class="w3-row-padding w3-center w3-margin-top">
-<div class="w3-third">
-  <div class="w3-card-2 w3-container" style="min-height:460px">
-  <h2>Hogares</h2><br>
-  <i class="fa fa-desktop w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
-  <p>Organiza los datos de los hogares en el sistema</p>
-  <br><br><br><br><br>
-  <a href="./hogares.html"><button class="w3-btn w3-theme">Entrar</button></a>
-  </div>
-</div>
-
-<div class="w3-third">
-  <div class="w3-card-2 w3-container" style="min-height:460px">
-  <h2>Consumos</h2><br>
-  <i class="fa fa-css3 w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
-  <p>Registra el valor de los consumos del hogar</p>
-  <br><br><br><br><br>
-  <a href=""><button class="w3-btn w3-theme">Entrar</button></a>
-  </div>
-</div>
-
-<div class="w3-third">
-  <div class="w3-card-2 w3-container" style="min-height:460px">
-  <h2>Subsidios</h2><br>
-  <i class="fa fa-diamond w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
-  <p>Calcula si un hogar puede reclamar el beneficio</p>
-  <br><br><br><br><br>
-  <a href="Subsidies.jsp"><button class="w3-btn w3-theme">Entrar</button></a>
-  </div>
-</div>
-
-<div class="w3-third">
-  <div class="w3-card-2 w3-container" style="min-height:460px">
-  <h2>Informes</h2><br>
-  <i class="fa fa-diamond w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
-  <p>Visualiza informes con la informacion de los hogares</p>
-  <br><br><br><br><br>
-  <button class="w3-btn w3-theme" onclick="document.getElementById('reports').style.display='block'" style="font-weight:900;">Generar reporte</button>
-<div id="reports" class="w3-modal">
-  <div class="w3-modal-content w3-card-4 w3-animate-top">
-    <header class="w3-container w3-theme-l1"> 
-      <span onclick="document.getElementById('reports').style.display='none'"
-      class="w3-button w3-display-topright">×</span>
-      <h2>Informe de Hogares</h2>
-    </header>
-    <div class="w3-padding">
-      <form>
-        <div class="w3-section">
-          <div class="w3-section w3-half">      
-            <input class="w3-input" type="date" id="start_date" style="width: 70% " required>
-            <label>Desde</label>
-          </div>
-          <div class="w3-section w3-half">      
-              <input class="w3-input" type="date" id="end_date" style="width: 70%; center" required>
-            <label>Hasta</label>
-          </div>
-        </div>
-        <div class="w3-section">
-          <button class="w3-btn w3-theme w3-block" style="size: 500;">Generar</button>
-        </div>
-          <table border=1 class="w3-table w3-striped w3-bordered">
-        <thead>
-            <tr class="w3-theme">
-                <th>HOGAR</th>
-                <th>CICLO</th>
-                <th>AGUA</th>
-                <th>ELECTRICIDAD</th>
-                <th>GAS</th>
-                <th>VAL AGUA</th>
-                <th>VAL ELECT</th>
-                <th>VAL GAS</th>
-                <th>TOTAL AGUA</th>
-                <th>TOTAL ELECT</th>
-                <th>TOTAL GAS</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-            <td>prueba</td>
-            <td>prueba</td>
-            <td>prueba</td>
-            <td>prueba</td>
-            <td>prueba</td>
-            <td>prueba</td>
-            <td>prueba</td>
-            <td>prueba</td>
-            <td>prueba</td>
-            <td>prueba</td>
-            <td>prueba</td>
-            </tr>
-        </tbody>
-        </table>
-      </form>
-    </div>
-  </div>
-</div>
-  
-  </div>
-</div>
-    
-    
-
-   <script src="js/index.js"></script>   
-</body>
+    </body>
 </html>
+
+<script>
+    < script src = "https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity = "sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin = "anonymous" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+</script>

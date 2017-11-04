@@ -4,81 +4,102 @@ import Entidades.EntSubsidies;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-
 
 /**
- *
- * @author Juan Mesa
+ * @author Jeison González Cifuentes
  */
 public class DaosSubsidies {
 
-    public DaosSubsidies() {
-        DaosSubsidies daoHog;
-    }
-    
-    //Metodo cargar lista
-    public List<EntSubsidies> listar(Connection con) {
-        List<EntSubsidies> resul = new ArrayList<EntSubsidies>();
+    public String deleteSubsidy(Connection conection, int id_subsidy) {
+        String info = "";
         try {
-            PreparedStatement consAct = con.prepareStatement("SELECT * FROM homes");
-            ResultSet result = consAct.executeQuery();
-
-            while (result.next()) {
-                EntSubsidies subsidies = new EntSubsidies();
-                subsidies.setId_subsidy(result.getString(1));
-                subsidies.setEnergy_subsidy(result.getString(2));
-                subsidies.setGas_subsidy(result.getString(3));
-                subsidies.setWater_subsidy(result.getString(4));
-                subsidies.setId_param_subsidy(result.getString(5));
-                resul.add(subsidies);
-            }//Fin while
-        } catch (SQLException ex) {
-            Logger.getLogger(DaosSubsidies.class.getName()).log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
-        } finally {
-            try {
-                con.close();
-            } catch (Exception e) {
-            }//Fin Try/catch
-        }//Fin Try/catch/finally
-        return resul;
-    }//fin cargar lista
-    
-    //Guardar
-    public String insertarSubsidio(Connection con, String Id_subsidy, String Energy_subsidy, String Gas_subsidy, String water_subsidy, String Id_param_subsidy) {
-        String respuesta;
-        try {
-            PreparedStatement insert = con.prepareStatement("INSERT INTO `subsidies` (`Id_subsidy`, `Energy_subsidy`, `Gas_subsidy`, `water_subsidy`, `Id_param_subsidy`) VALUES (?,?,?,?,?)");
-            insert.setString(1, Id_subsidy);
-            insert.setString(2, Energy_subsidy);
-            insert.setString(3, Gas_subsidy);
-            insert.setString(4, water_subsidy);
-            insert.setString(5, Id_param_subsidy);
-            //JOptionPane.showMessageDialog(null, insert);
-            int result = insert.executeUpdate();
-            //JOptionPane.showMessageDialog(null, insert);
-            respuesta = "Subsidio registrado";
-            JOptionPane.showMessageDialog(null, respuesta);
+            PreparedStatement stm = conection.prepareStatement(SQLHelpers.deleteSubsidy(id_subsidy));
+            stm.execute();
+            info = "Registro borrado exitosamente";
         } catch (Exception e) {
-            respuesta = "Subsidio no registrado";
-            JOptionPane.showMessageDialog(null, respuesta);
-        } finally {
- 
-            try {
-                con.close();
-            } catch (Exception e) {
-            }//fin try/catch
-        }///fin try/catch/finally
-        return respuesta;
-    }//fin Guardar
-      
-    public static boolean saveSubsidy (Connection con,String agua1, String elct1){
-        return true;
+            info = "Error intentando borrar el subsidio con código : " + id_subsidy;
+            System.out.println("Error intentando borrar el subsidio con código : " + id_subsidy + "\n Error : " + e.getMessage());
+        }
+        return info;
+    }
+
+    public List<EntSubsidies> subsidiesList(Connection conexion, EntSubsidies subsidies) {
+        List<EntSubsidies> list = new ArrayList<>();
+        try {
+            PreparedStatement stm = conexion.prepareStatement(
+                    SQLHelpers.getSubsidy(subsidies.getIdSybsudy(), subsidies.getStartDate(), subsidies.getEndDate(), 
+                            subsidies.getName(), subsidies.getDescription(), subsidies.getExpectedWaterValue(), 
+                            subsidies.getExpectedEnergyValue(), subsidies.getExpectedNaturalGasValue(), 
+                            subsidies.getType()));
+            ResultSet rc = stm.executeQuery();
+            while (rc.next()) {
+                EntSubsidies subsidy = new EntSubsidies();
+                subsidy.setIdSybsudy(rc.getInt(1));
+                subsidy.setStartDate(rc.getDate(2));
+                subsidy.setEndDate(rc.getDate(3));
+                subsidy.setName(rc.getString(4));
+                subsidy.setDescription(rc.getString(5));
+                subsidy.setExpectedWaterValue(rc.getDouble(6));
+                subsidy.setExpectedEnergyValue(rc.getDouble(7));
+                subsidy.setExpectedNaturalGasValue(rc.getDouble(8));
+                subsidy.setType(rc.getInt(9));
+                list.add(subsidy);
+            }
+        } catch (Exception e) {
+            System.out.println("Error en DaoSubsidies / subsidiesList : " + e.getMessage());
+        }
+        return list;
+    }
+
+    public String insertSubsidy(Connection conexion, EntSubsidies subsidy) {
+        String info = "";
+        try {
+            PreparedStatement stm = conexion.prepareStatement(SQLHelpers.insertSubsidy());
+            stm.setInt(1, subsidy.getIdSybsudy());
+            stm.setDate(2, subsidy.getStartDate());
+            stm.setDate(3, subsidy.getEndDate());
+            stm.setString(4, subsidy.getName());
+            stm.setString(5, subsidy.getDescription());
+            stm.setDouble(6, subsidy.getExpectedWaterValue());
+            stm.setDouble(7, subsidy.getExpectedEnergyValue());
+            stm.setDouble(8, subsidy.getExpectedNaturalGasValue());
+            stm.setInt(9, subsidy.getType());
+            stm.execute();
+            if (stm.getUpdateCount() > 0) {
+                info = "Subsidio '" + subsidy.getName() + "' guardado exitosamente";
+            } else {
+                info = "Error intentando guardar el subsidio : " + subsidy.getName();
+            }
+        } catch (Exception e) {
+            System.out.println("Error intentando guardar subsidio : " + e.getMessage());
+        }
+        return info;
+    }
+
+    public String updateSubsidy(Connection conexion, EntSubsidies subsidy) {
+        String info = "";
+        try {
+            PreparedStatement stm = conexion.prepareStatement(SQLHelpers.updateSubsidy());
+            stm.setDate(1, subsidy.getStartDate());
+            stm.setDate(2, subsidy.getEndDate());
+            stm.setString(3, subsidy.getName());
+            stm.setString(4, subsidy.getDescription());
+            stm.setDouble(5, subsidy.getExpectedWaterValue());
+            stm.setDouble(6, subsidy.getExpectedEnergyValue());
+            stm.setDouble(7, subsidy.getExpectedNaturalGasValue());
+            stm.setInt(8, subsidy.getType());
+            stm.setInt(9, subsidy.getIdSybsudy());
+            stm.execute();
+            if (stm.getUpdateCount() > 0) {
+                info = "Subsidio '" + subsidy.getName() + "' editado exitosamente";
+            } else {
+                info = "Error intentando editar el subsidio : " + subsidy.getName();
+            }
+        } catch (Exception e) {
+            System.out.println("Error intentando guardar subsidio : " + e.getMessage());
+        }
+        return info;
     }
 }

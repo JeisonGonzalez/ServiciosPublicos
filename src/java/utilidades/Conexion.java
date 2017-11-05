@@ -22,6 +22,10 @@ public class Conexion {
         return cnx;
     }
 
+    public static void closeConnection() throws SQLException {
+        cnx.close();
+    }
+     
     public static void main(String[] args) {
         System.out.println("No hay método encargado de probar conexión a base de datos.");
     }

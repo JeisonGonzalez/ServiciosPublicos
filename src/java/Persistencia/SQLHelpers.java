@@ -56,8 +56,8 @@ public class SQLHelpers {
     }
 
     public static String insertSubsidy() {
-        return "INSERT INTO subsidy (idsubsidy, startDate, endDate, name, description, expectedWaterValue, expectedEnergyValue, expectedNaturalGasValue, type)"
-                + " VALUES (?,?,?,?,?,?,?,?,?)";
+        return "INSERT INTO subsidy (startDate, endDate, name, description, expectedWaterValue, expectedEnergyValue, expectedNaturalGasValue, type)"
+                + " VALUES (?,?,?,?,?,?,?,?)";
     }
 
     public static String deleteSubsidy(int id_subsidy) {

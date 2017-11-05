@@ -57,15 +57,14 @@ public class DaosSubsidies {
         String info = "";
         try {
             PreparedStatement stm = conexion.prepareStatement(SQLHelpers.insertSubsidy());
-            stm.setInt(1, subsidy.getIdSybsudy());
-            stm.setDate(2, subsidy.getStartDate());
-            stm.setDate(3, subsidy.getEndDate());
-            stm.setString(4, subsidy.getName());
-            stm.setString(5, subsidy.getDescription());
-            stm.setDouble(6, subsidy.getExpectedWaterValue());
-            stm.setDouble(7, subsidy.getExpectedEnergyValue());
-            stm.setDouble(8, subsidy.getExpectedNaturalGasValue());
-            stm.setInt(9, subsidy.getType());
+            stm.setDate(1, subsidy.getStartDate());
+            stm.setDate(2, subsidy.getEndDate());
+            stm.setString(3, subsidy.getName());
+            stm.setString(4, subsidy.getDescription());
+            stm.setDouble(5, subsidy.getExpectedWaterValue());
+            stm.setDouble(6, subsidy.getExpectedEnergyValue());
+            stm.setDouble(7, subsidy.getExpectedNaturalGasValue());
+            stm.setInt(8, subsidy.getType());
             stm.execute();
             if (stm.getUpdateCount() > 0) {
                 info = "Subsidio '" + subsidy.getName() + "' guardado exitosamente";

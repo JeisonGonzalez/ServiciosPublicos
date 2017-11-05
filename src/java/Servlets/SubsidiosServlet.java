@@ -3,7 +3,6 @@ package Servlets;
 import Bussines.SubsidyBussines;
 import Entidades.EntSubsidies;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -41,7 +40,7 @@ public class SubsidiosServlet extends HttpServlet {
             try {
                 request.setAttribute("info", info);
                 request.setAttribute("list", subsidyBussines.subsidiesList(subsidy));
-                request.getRequestDispatcher("/index.jsp").forward(request, response);
+                request.getRequestDispatcher("/Subsidy.jsp").forward(request, response);
             } catch (ServletException | IOException ex) {
                 Logger.getLogger(SubsidiosServlet.class.getName()).log(Level.SEVERE, null, ex);
             }

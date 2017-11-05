@@ -34,7 +34,6 @@ public class SubsidyBussines {
             return "<br> Por favor seleccione el subsidio que desea eliminar.";
         }
         conexion = Conexion.getCon();
-        conexion.close();
         return dao.deleteSubsidy(conexion, Integer.parseInt(id_subsidy));
     }
 
@@ -77,7 +76,6 @@ public class SubsidyBussines {
                 }
                 info = dao.insertSubsidy(conexion, subsidy);
             }
-            conexion.close();
         }
         
         return info;

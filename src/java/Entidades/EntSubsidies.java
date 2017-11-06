@@ -1,71 +1,109 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entidades;
 
+import java.sql.Date;
+
+
 /**
- *
- * @author josef
+ * @author Jeison González  Cifuentes
  */
+
 public class EntSubsidies {
-    private String id_subsidy;
-    private String energy_subsidy;
-    private String gas_subsidy;
-    private String water_subsidy;
-    private String id_param_subsidy;
+    private int idSybsudy; 
+    private Date startDate;
+    private Date endDate;
+    private String name; 
+    private String description;
+    private Double expectedWaterValue;
+    private Double expectedEnergyValue; 
+    private Double expectedNaturalGasValue;
+    private int type;
 
     public EntSubsidies() {
     }
 
-    public EntSubsidies(String id_subsidy, String energy_subsidy, String gas_subsidy, String water_subsidy, String id_param_subsidy) {
-        this.id_subsidy = id_subsidy;
-        this.energy_subsidy = energy_subsidy;
-        this.gas_subsidy = gas_subsidy;
-        this.water_subsidy = water_subsidy;
-        this.id_param_subsidy = id_param_subsidy;
+    public EntSubsidies(int idSybsudy, Date startDate, Date endDate, String name, String description, Double expectedWaterValue, Double expectedEnergyValue, Double expectedNaturalGasValue, int type) {
+        this.idSybsudy = idSybsudy;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.name = name;
+        this.description = description;
+        this.expectedWaterValue = expectedWaterValue;
+        this.expectedEnergyValue = expectedEnergyValue;
+        this.expectedNaturalGasValue = expectedNaturalGasValue;
+        this.type = type;
     }
 
-    public String getId_subsidy() {
-        return id_subsidy;
+    public int getIdSybsudy() {
+        return idSybsudy;
     }
 
-    public void setId_subsidy(String id_subsidy) {
-        this.id_subsidy = id_subsidy;
+    public void setIdSybsudy(int idSybsudy) {
+        this.idSybsudy = idSybsudy;
     }
 
-    public String getEnergy_subsidy() {
-        return energy_subsidy;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setEnergy_subsidy(String energy_subsidy) {
-        this.energy_subsidy = energy_subsidy;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    public String getGas_subsidy() {
-        return gas_subsidy;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void setGas_subsidy(String gas_subsidy) {
-        this.gas_subsidy = gas_subsidy;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
-    public String getWater_subsidy() {
-        return water_subsidy;
+    public String getName() {
+        return name;
     }
 
-    public void setWater_subsidy(String water_subsidy) {
-        this.water_subsidy = water_subsidy;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getId_param_subsidy() {
-        return id_param_subsidy;
+    public String getDescription() {
+        return description;
     }
 
-    public void setId_param_subsidy(String id_param_subsidy) {
-        this.id_param_subsidy = id_param_subsidy;
+    public void setDescription(String description) {
+        this.description = description;
     }
-    
+
+    public Double getExpectedWaterValue() {
+        return expectedWaterValue;
+    }
+
+    public void setExpectedWaterValue(Double expectedWaterValue) {
+        this.expectedWaterValue = expectedWaterValue;
+    }
+
+    public Double getExpectedEnergyValue() {
+        return expectedEnergyValue;
+    }
+
+    public void setExpectedEnergyValue(Double expectedEnergyValue) {
+        this.expectedEnergyValue = expectedEnergyValue;
+    }
+
+    public Double getExpectedNaturalGasValue() {
+        return expectedNaturalGasValue;
+    }
+
+    public void setExpectedNaturalGasValue(Double expectedNaturalGasValue) {
+        this.expectedNaturalGasValue = expectedNaturalGasValue;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
     
 }

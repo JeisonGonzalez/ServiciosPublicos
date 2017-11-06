@@ -1,3 +1,9 @@
+<%-- 
+    Document   : Subsidies
+    Created on : Oct 17, 2017, 6:30:20 PM
+    Author     : Lizy
+--%>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -117,7 +123,7 @@
   <i class="fa fa-diamond w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
   <p>Calcula si un hogar puede reclamar el beneficio</p>
   <br><br><br><br><br>
-  <a href="Subsidies.jsp"><button class="w3-btn w3-theme">Entrar</button></a>
+  <a href="SubsidiosServlet"><button class="w3-btn w3-theme">Entrar</button></a>
   </div>
 </div>
 

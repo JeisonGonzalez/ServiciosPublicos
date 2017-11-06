@@ -1,36 +1,84 @@
 package Bussines;
 
+import Entidades.EntSubsidies;
 import Persistencia.DaosSubsidies;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
-import utilidades.ConBD1;
 import utilidades.Conexion;
 
 /**
- * @author Jeison
+ * @author Jeison González Cifuentes
  */
 public class SubsidyBussines {
     
-    public static DaosSubsidies doSubsidies;
-    static Connection c;
+    DaosSubsidies dao;
+    Connection conexion;
+
     public SubsidyBussines() {
-        doSubsidies = new DaosSubsidies();
+        dao = new DaosSubsidies();
     }
-    
-    public static String saveSubsidy(String agua1, String elct1){
-        String mensaje = "";
+
+    public List<EntSubsidies> subsidiesList (EntSubsidies subsidies) throws SQLException {
         try {
-            c = new ConBD1().getConexionMysql();
-            doSubsidies = new DaosSubsidies();
-            if (doSubsidies.saveSubsidy(c, agua1, elct1)) {
-                mensaje = "Subsidio calculado correctamente";
-            } else {
-                mensaje = "Ocurrió un error calculando el subsidio";
-            }
+            conexion = Conexion.getCon();
+            return (List<EntSubsidies>) dao.subsidiesList(conexion, subsidies);
         } catch (Exception e) {
-            mensaje = "Ocurrió un error calculando el subsidio";
+            System.out.println("Error obteniendo listado de subsidios : " + e.getMessage());
+            return null;
         }
-        return mensaje;
+    }
+
+    public String deleteSubsidy(String id_subsidy) throws SQLException {
+        if (id_subsidy == null || id_subsidy.isEmpty()) {
+            return "<br> Por favor seleccione el subsidio que desea eliminar.";
+        }
+        conexion = Conexion.getCon();
+        return dao.deleteSubsidy(conexion, Integer.parseInt(id_subsidy));
+    }
+
+    public String saveSubsidy(EntSubsidies subsidy) throws Exception {
+        String info = "";
+        
+        if (subsidy.getName() == null || subsidy.getName().isEmpty()) {
+            info += "<bt> Debe ingresar un nombre para el subsidio.";
+        }
+        if (subsidy.getDescription() == null || subsidy.getDescription().isEmpty()) {
+            info += "<bt> Por favor agrege una descripción para el subsidio que desea guardar.";
+        }
+        if (subsidy.getStartDate() == null) {
+            info += "<bt> Ingrese fecha en que comenzará a aplicar del subsidio.";
+        }
+        if (subsidy.getEndDate() == null) {
+            info += "<bt> Ingrese fecha en que finaliza la asignación del subsidio.";
+        }
+        if (subsidy.getExpectedEnergyValue() == null) {
+            info += "<bt> Debe ingresar un consumo de agua esperado.";
+        }
+        if (subsidy.getExpectedNaturalGasValue() == null) {
+            info += "<bt> Debe ingresar un consumo de gas natural esperado.";
+        }
+        if (subsidy.getExpectedWaterValue() == null) {
+            info += "<bt> Debe ingresar un consumo de agua esperado.";
+        }
+        if (subsidy.getType() <= 0) {
+            info += "<bt> Por favor selecciones un tipo de subsidio.";
+        }
+        
+        if (info.isEmpty()) {
+            conexion = Conexion.getCon();
+            if (subsidy.getIdSybsudy() > 0) {
+                info = dao.updateSubsidy(conexion, subsidy);
+            } else {
+                List<EntSubsidies> subsidiesList = subsidiesList(subsidy);
+                if (subsidiesList != null && !subsidiesList.isEmpty()) {
+                    info += "Ya existe un registro con los datos ingresados";
+                }
+                info = dao.insertSubsidy(conexion, subsidy);
+            }
+        }
+        
+        return info;
     }
     
 }

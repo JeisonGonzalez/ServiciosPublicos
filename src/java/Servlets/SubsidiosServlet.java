@@ -1,49 +1,69 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Servlets;
 
 import Bussines.SubsidyBussines;
+import Entidades.EntSubsidies;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
- * @author Jeison
+ * @author Jeison Goinzález Cifuentes
  */
+
 public class SubsidiosServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            String elct1 = request.getParameter("elect1"); 
-            String agua1 = request.getParameter("agua1");
-            String action = request.getParameter("action");
+        try {
             SubsidyBussines subsidyBussines = new SubsidyBussines();
+            EntSubsidies subsidy = new EntSubsidies();
+            String info = "";
             
-            if (action.equalsIgnoreCase("Guardar")) {
-                subsidyBussines.saveSubsidy(agua1, elct1);
+            if (request.getParameter("action") != null && !request.getParameter("action").isEmpty()) {
+                switch(request.getParameter("action")){
+                    case "Guardar" :
+                        subsidy = composeSubsidy(request);
+                        info = subsidyBussines.saveSubsidy(subsidy);
+                        break;
+                    case "Borrar" :
+                        info = subsidyBussines.deleteSubsidy(request.getParameter("idSybsudy"));
+                        break;
+                }
             }
             
+            try {
+                request.setAttribute("info", info);
+                request.setAttribute("list", subsidyBussines.subsidiesList(subsidy));
+                request.getRequestDispatcher("/Subsidy.jsp").forward(request, response);
+            } catch (ServletException | IOException ex) {
+                Logger.getLogger(SubsidiosServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        } catch (NumberFormatException | SQLException e) {
+            System.out.println("Error general : " + e.getMessage());
         }
     }
 
+    public EntSubsidies composeSubsidy(HttpServletRequest request) {
+        EntSubsidies subsidy = new EntSubsidies();
+        subsidy.setIdSybsudy(request.getParameter("idSybsudy") != null && !request.getParameter("idSybsudy").isEmpty() ? Integer.parseInt(request.getParameter("idSybsudy")) : 0);
+        subsidy.setEndDate(request.getParameter("endDate") != null && !request.getParameter("endDate").isEmpty() ? Date.valueOf(request.getParameter("endDate")) : null);
+        subsidy.setStartDate(request.getParameter("startDate") != null && !request.getParameter("startDate").isEmpty() ? Date.valueOf(request.getParameter("startDate")) : null);
+        subsidy.setName(request.getParameter("name"));
+        subsidy.setDescription(request.getParameter("description"));
+        subsidy.setExpectedEnergyValue(request.getParameter("expectedEnergyValue") != null &&  !request.getParameter("expectedEnergyValue").isEmpty() ? Double.parseDouble(request.getParameter("expectedEnergyValue")) : null);
+        subsidy.setExpectedNaturalGasValue(request.getParameter("expectedNaturalGasValue") != null &&  !request.getParameter("expectedNaturalGasValue").isEmpty() ? Double.parseDouble(request.getParameter("expectedNaturalGasValue")) : null);
+        subsidy.setExpectedWaterValue(request.getParameter("expectedWaterValue") != null &&  !request.getParameter("expectedWaterValue").isEmpty() ? Double.parseDouble(request.getParameter("expectedWaterValue")) : null);
+        subsidy.setType(1);
+        return subsidy;
+    }
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -56,7 +76,11 @@ public class SubsidiosServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(SubsidiosServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -70,7 +94,11 @@ public class SubsidiosServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(SubsidiosServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
